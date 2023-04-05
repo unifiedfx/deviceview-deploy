@@ -1,0 +1,17 @@
+name: 'DeviceView Deploy Action'
+description: 'Deploy Cisco Device Configurations using device-view.com Api'
+inputs:
+  api-token:
+    description: 'Device-View.com API Token - do not save in Repo, use Secrets'
+    required: true
+  source-config-path:
+    description: 'Path to the source config files'
+    required: true
+    default: 'src'
+  api-endpoint:
+    description: 'The endpoint to call'
+    required: true
+    default: "https://app.device-view.com/api/devices/{id}"
+runs:
+  using: 'node16'
+  main: 'index.js'

@@ -1,17 +1,15 @@
 on: [push]
 
 jobs:
-  hello_world_job:
+  device-view-deploy-actions:
     runs-on: ubuntu-latest
-    name: A job to say hello
+    name: Deploy Device Config
     steps:
       - name: Download Current Repository
         uses: actions/checkout@v3
       - name: Hello world action step
         id: hello
-        uses: ./action/
+        uses: ./device-view-deploy-action/
         with:
-          who-to-greet: 'Mona the Octocat'
-      # Use the output from the `hello` step
-      - name: Get the output time
-        run: echo "The time was ${{ steps.hello.outputs.time }}"
+          api-token: ${{ secrets.API_TOKEN }}
+        
