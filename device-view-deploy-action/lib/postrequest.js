@@ -1,5 +1,5 @@
 const axios = require('axios');
-const urlConcat = require('UrlConcat')
+const urlConcat = require('./UrlConcat.js')
 const core = require('@actions/core');
 
 async function SendPostCommand(device, xCommand, jwtToken, apiEndpoint){
