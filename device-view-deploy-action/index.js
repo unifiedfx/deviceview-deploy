@@ -47,4 +47,4 @@ async function OutputCalls(deviceArray, commandArray){
     }
 }
 
-await main();
+main();
