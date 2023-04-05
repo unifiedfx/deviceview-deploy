@@ -7,8 +7,8 @@ const macro2 = require('./lib/postrequest');
 let apiToken = core.getInput('api-token');
 let apiEndpoint = core.getInput('api-endpoint');
 let sourceConfigPath = core.getInput('source-config-path');
-let destinationsCSV = __dirname + `/${sourceConfigPath}/destinations.csv`;
-let commandsCSV = __dirname + `/${sourceConfigPath}/commands.csv`;
+let destinationsCSV = __dirname + `/../${sourceConfigPath}/destinations.csv`;
+let commandsCSV = __dirname + `/../${sourceConfigPath}/commands.csv`;
 
 async function main(){
     if(!Fs.existsSync(destinationsCSV) || !Fs.existsSync(commandsCSV)) {
