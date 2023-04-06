@@ -12,9 +12,10 @@ async function main(){
     const basePath = path.resolve(__dirname, `../${sourceConfigPath}`);
     console.log(basePath);
     const commands = await getCommands(basePath);
-    console.log(commands);
+    // console.log(commands);
     const targetPaths = await getTargetPaths(basePath);
     const cmds = await joinTargetPaths(commands, targetPaths);
+    console.log(cmds);
     await sendCommands(cmds, apiToken, apiEndpoint);
 }
 async function sendCommands(groups, apiToken, apiEndpoint){
