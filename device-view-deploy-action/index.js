@@ -39,14 +39,12 @@ async function sendCommands(groups, apiToken, apiEndpoint){
         }
     }
 }
-async function getTargets(commands = []){
+async function getTargets(command){
     let targets = {};
-    for (const cmd of commands) {
-        for(const target of cmd.targets){
-            let t = await extractor.ExtractContents(target);
-            for(const dest of t){
-                targets[dest] = true;
-            }
+    for(const target of command.targets){
+        let t = await extractor.ExtractContents(target);
+        for(const dest of t){
+            targets[dest] = true;
         }
     }
     return Object.keys(targets);
