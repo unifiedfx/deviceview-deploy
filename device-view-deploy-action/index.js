@@ -10,6 +10,7 @@ let sourceConfigPath = core.getInput('source-config-path');
 
 async function main(){
     const basePath = path.resolve(__dirname, `../${sourceConfigPath}`);
+    console.log(basePath);
     const commands = getCommands(basePath);
     console.log(commands);
     const targetPaths = await getTargetPaths(basePath);
