@@ -10,6 +10,6 @@ function ConcatenatePlaceholder(apiEndpoint, deviceId){
     );
 
     return completedURL;
-};
+}
 
 module.exports = {ConcatenatePlaceholder};

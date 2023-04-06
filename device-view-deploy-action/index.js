@@ -1,50 +1,102 @@
-const Fs = require('fs');
 const core = require('@actions/core');
 const extractor = require('./lib/ExtractCSVContents');
-const macro1 = require('./lib/getrequest');
-const macro2 = require('./lib/postrequest');
+const glob = require("@actions/glob");
+const path = require("path");
+const postRequest = require("./lib/postrequest");
 
 let apiToken = core.getInput('api-token');
 let apiEndpoint = core.getInput('api-endpoint');
 let sourceConfigPath = core.getInput('source-config-path');
-let destinationsCSV = __dirname + `/../${sourceConfigPath}/destinations.csv`;
-let commandsCSV = __dirname + `/../${sourceConfigPath}/commands.csv`;
 
 async function main(){
-    if(!Fs.existsSync(destinationsCSV) || !Fs.existsSync(commandsCSV)) {
-        core.error(`\tDestinations '${destinationsCSV}' or Commands ${commandsCSV} file not found`);
-    } else {
-        try{
-            let deviceArray = await extractor.ExtractContents(destinationsCSV);
-            let commandArray = await extractor.ExtractContents(commandsCSV);
-            core.info(`CSV data extracted successfully`);
-            OutputCalls(deviceArray, commandArray);
-        } catch (err){
-            core.error(`\tError processing CSV files: ${err.message}`);
+    const basePath = path.resolve(__dirname, `../${sourceConfigPath}`);
+    const commands = getCommands(basePath);
+    console.log(commands);
+    const targetPaths = await getTargetPaths(basePath);
+    const cmds = await joinTargetPaths(commands, targetPaths);
+    await sendCommands(cmds, apiToken, apiEndpoint);
+}
+async function sendCommands(groups, apiToken, apiEndpoint){
+    console.log(groups);
+    for(const group of groups){
+        let targets = await getTargets(group);
+        let cmds = []
+        for(const path of group.paths.sort()){
+            cmds = cmds.concat(await extractor.ExtractContents(path));
+        }
+        for(const target of targets){
+            for(const cmd of cmds) {
+                console.log(cmd, target);
+                try {
+                    await postRequest.SendPostCommand(target, cmd, apiToken, apiEndpoint);
+                }  catch (error) {
+                    console.log(error);
+                    break;
+                }
+            }
         }
     }
 }
-
-async function OutputCalls(deviceArray, commandArray){
-    try{
-        core.info('\n** GET Calls **')
-        for(var i = deviceArray.length - 1; i >= 0; i--){
-            core.info(`GET Request for device: ${deviceArray[i]}`);
-            await macro1.SendGetCommand(deviceArray[i], apiToken, apiEndpoint);
-            core.info('\n');
-        }
-
-        core.info('** POST Calls **')
-        for(i = 0; i < deviceArray.length; i++){
-            for(j = 0; j < commandArray.length; j++){
-                core.info(`POST Request for device: ${deviceArray[i]} with command(s):\n${commandArray[j]}`);
-                await macro2.SendPostCommand(deviceArray[i], commandArray[j], apiToken, apiEndpoint);
-                core.info('\n');
+async function getTargets(commands = []){
+    let targets = {};
+    for (const cmd of commands) {
+        for(const target of cmd.targets){
+            let t = await extractor.ExtractContents(target);
+            for(const dest of t){
+                targets[dest] = true;
             }
         }
-    } catch(err){
-        core.error(`\t${err.message}`);
     }
+    return Object.keys(targets);
+}
+async function getCommands(basePath, commandFilename = 'command*.txt'){
+    const commandPatterns = [basePath + `/*/${commandFilename}`];
+    const commandPaths = await (await glob.create(commandPatterns.join('\n'))).glob();
+    return getGroups(basePath, commandPaths);
+}
+async function getMacros(basePath, macroPath = 'macros'){
+    const macroPatterns = [basePath + `/*/${macroPath}/*/*.js`];
+    const macroPaths = await (await glob.create(macroPatterns.join('\n'))).glob();
+    return getGroups(basePath, macroPaths);
+}
+async function getTargetPaths(basePath, targetFilename = 'target*.csv'){
+    const targetPatterns = [basePath + `/*/${targetFilename}`];
+    const targetPaths = await (await glob.create(targetPatterns.join('\n'))).glob();
+    return getGroups(basePath, targetPaths);
+}
+async function joinTargetPaths(group, targetPaths){
+    let result = [];
+    for(let i = 0; i < group.length; i++){
+        let g = group[i];
+        let d = targetPaths.find(d => d.group === g.group);
+        if(d){
+            result.push({
+                group: g.group,
+                paths: g.paths,
+                targets: d.paths
+            });
+        }
+    }
+    return result;
+}
+function getGroups(basePath, paths = []){
+    const start = basePath.split('/').length;
+    let groups = [];
+    for(let i = 0; i < paths.length; i++){
+        let path = paths[i];
+        let group = path.split('/').slice(start)[0];
+        if(!groups.some(g => g.group === group)){
+            groups.push({
+                group: group,
+                paths: [path]
+            });
+        }
+        else {
+            let g = groups.find(g => g.group === group);
+            g.paths = g.paths.concat(path);
+        }
+    }
+    return groups;
 }
 
 main();

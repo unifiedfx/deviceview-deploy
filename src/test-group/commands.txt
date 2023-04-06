@@ -1,0 +1,4 @@
+#Lines starting with hashtags are ignored
+#File that contains commands to send to phone
+"Dialpad_1|Pause:4000|Dialpad_2|Pause:4000|Dialpad_3"
+"Pause:6000|Back"
