@@ -6,16 +6,16 @@ const postRequest = require("./lib/postrequest");
 
 let apiToken = core.getInput('api-token');
 let apiEndpoint = core.getInput('api-endpoint');
+let commandFilename = core.getInput('command-filename');
+let targetFilename = core.getInput('target-filename');
+let macroPath = core.getInput('macro-path');
 let sourceConfigPath = core.getInput('source-config-path');
 
 async function main(){
     const basePath = path.resolve(__dirname, `../${sourceConfigPath}`);
-    // console.log(basePath);
     const commands = await getCommands(basePath);
-    // console.log(commands);
     const targetPaths = await getTargetPaths(basePath);
     const cmds = await joinTargetPaths(commands, targetPaths);
-    // console.log(cmds);
     await sendCommands(cmds, apiToken, apiEndpoint);
 }
 async function sendCommands(groups, apiToken, apiEndpoint){
@@ -49,17 +49,17 @@ async function getTargets(command){
     }
     return Object.keys(targets);
 }
-async function getCommands(basePath, commandFilename = 'command*.txt'){
+async function getCommands(basePath){
     const commandPatterns = [basePath + `/*/${commandFilename}`];
     const commandPaths = await (await glob.create(commandPatterns.join('\n'))).glob();
     return getGroups(basePath, commandPaths);
 }
-async function getMacros(basePath, macroPath = 'macros'){
+async function getMacros(basePath){
     const macroPatterns = [basePath + `/*/${macroPath}/*/*.js`];
     const macroPaths = await (await glob.create(macroPatterns.join('\n'))).glob();
     return getGroups(basePath, macroPaths);
 }
-async function getTargetPaths(basePath, targetFilename = 'target*.csv'){
+async function getTargetPaths(basePath){
     const targetPatterns = [basePath + `/*/${targetFilename}`];
     const targetPaths = await (await glob.create(targetPatterns.join('\n'))).glob();
     return getGroups(basePath, targetPaths);

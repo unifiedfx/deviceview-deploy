@@ -11,4 +11,8 @@ jobs:
         uses: ./device-view-deploy-action/
         with:
           api-token: ${{ secrets.API_TOKEN }}
+# The following are optional, uncomment to use
+#          source-config-path: 'src'
+#          command-filename: 'command*.txt'
+#          target-filename: 'target*.csv'
         

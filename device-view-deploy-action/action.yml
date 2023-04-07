@@ -5,13 +5,27 @@ inputs:
     description: 'Device-View.com API Token - do not save in Repo, use Secrets'
     required: true
   source-config-path:
-    description: 'Path to the source config files'
+    description: 'Path to the source config files, uses glob pattern matching, empty string for root'
     required: true
     default: 'src'
   api-endpoint:
     description: 'The endpoint to call'
     required: true
     default: "https://app.device-view.com/api/devices/{id}"
+  command-filename:
+    description: 'Filename of the command file, uses glob pattern matching'
+    required: true
+    default: 'command*.txt'
+  target-filename:
+    description: 'Filename of the target file, uses glob pattern matching'
+    required: true
+    default: 'target*.csv'
+  macro-path:
+    description: 'Name of the folder to search for macros, uses glob pattern matching'
+    required: true
+    default: 'macros'
+
+
 runs:
   using: 'node16'
   main: 'index.js'
