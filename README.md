@@ -131,4 +131,4 @@ As part of this simplification it is possible to send xConfiguration and xStatus
 A Github action is best suited for pushing configuration/state however we think there would be merit if we could also use this action to query device information and save/export.
 
 ## Feedback
-As this is a new project we would welcome any feedback, please feel free to raise an [issue](../../issues/new) or [contact us](mailto:mail@unifiedfx.com) directly.
+As this is a new project we would welcome any feedback, please feel free to raise an [issue](../../issues/new?title=Feedback&labels=enhancement) or [contact us](mailto:mail@unifiedfx.com) directly.
