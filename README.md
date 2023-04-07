@@ -15,7 +15,7 @@ The Github action requires the following information in order to deploy Cisco de
 * List of target devices (i.e. Mac Addresses)
 * List of commands (i.e. xCommand's) to send
 
-To use this Github action the simplest approach is to Fork this repository (can be made private), add/update the relevant target and command files and set an ApiToken within the Repository Action Secrets.
+To use this Github action the simplest approach is to **[Fork](../../fork)** this repository (can be made private), add/update the relevant target and command files and set an ApiToken within the Repository Action Secrets.
 
 Once the repository is setup and an appropriate commit is made (or at a specified time/schedule) all the commands will be sent to all the specified targets.
 This provides the ability to have a **Desired State** specified within the command file(s) and have that state pushed automatically (or manually triggered) to the specified target devices.
@@ -131,4 +131,4 @@ As part of this simplification it is possible to send xConfiguration and xStatus
 A Github action is best suited for pushing configuration/state however we think there would be merit if we could also use this action to query device information and save/export.
 
 ## Feedback
-As this is a new project we would welcome any feedback, please feel free to raise an [issue](issues/new) or [contact us](mailto://mail@unifiedfx.com) directly.
+As this is a new project we would welcome any feedback, please feel free to raise an [issue](../../issues/new) or [contact us](mailto:mail@unifiedfx.com) directly.
