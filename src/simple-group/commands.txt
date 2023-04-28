@@ -1,0 +1,17 @@
+# Lines starting with hashtags are ignored
+# File that contains commands to send to target phones
+# Each line is a command
+# Two types of commands are supported:
+#   * MPP/PhoneOS Macro commands i.e. Dialpad_1|Pause:4000|Dialpad_2|Pause:4000|Dialpad_3
+#   * CE/RoomOS xApi commands i.e. xCommand "xCommandName" "xCommandParameter"
+# Note: Remove the '#' from the beginning of the line to enable the command
+
+# This command will set the default volume to 50%
+#xConfiguration Audio DefaultVolume: 50
+
+# This commands will set the ring tone to Ascent with 50% volume
+#xConfiguration Audio SoundsAndAlerts RingTone: Ascent
+#xConfiguration Audio SoundsAndAlerts RingVolume: 50
+
+# Example of a MPP/PhoneOS Macro command
+#Dialpad_1|Pause:4000|Dialpad_2|Pause:4000|Dialpad_3

@@ -74,11 +74,50 @@ Again this allows for command files to be copied to other **Desired State Group*
 
 The command file contains a simple list of commands (i.e. xCommand) with a single command per line, refer to the sample [commands.txt](src/test-group/commands.txt) file as an example.
 
+### Parameterised Commands
+
+Command files support parameterized commands, this allows for inserting/interpolating values into the commands for each target device.
+By including additional columns in the target.csv file these columns can be used to insert values into the command.
+Interpolation uses the [Mustache](https://mustache.github.io/) templating language, the following target.csv file includes a systemUnitName column:
+
+``` csv
+id,systemUnitName
+H10G6MFD549K,DemoUnit1
+```
+
+The command file can then use the systemUnitName column to insert the value into the command:
+
+``` text
+xConfiguration SystemUnit Name: {{systemUnitName}}
+```
+
+This would result in the following command being sent to the H10G6MFD549K device:
+
+``` text
+xConfiguration SystemUnit Name: DemoUnit1
+```
+
+Note: The column name is case sensitive and must match exactly and the first column must be 'id' as this is used to match the target device.
+Note: The advanced sample [targets.csv](src/advanced-group/targets.csv) and [commands.txt](src/advanced-group/commands.txt) files includes examples of using parameterized commands.
+
 ### Branching
 
 As this is a git repository you can take advantage of branches to scope what updates/states are deployed.
 For example you could create a 'test' branch and only include targets for test devices.
 Once changes are complete you can merge the 'test' branch back into 'main' to add in the updated commands to then deploy to production targets.
+
+### Running locally
+
+Running locally requires nodejs to be installed, this can be downloaded from [nodejs.org](https://nodejs.org/en/download/).
+
+To run the Github Action locally you can use the [device-view-deploy-action](device-view-deploy-action) nodejs script.
+This accepts the same parameters as the Github Action and will run the same logic locally.
+The following example will run the script with the default parameters:
+
+``` bash
+cd device-view-deploy-action
+node index.js --api-token <API_TOKEN>
+```
 
 ### Roadmap Features
 
@@ -117,13 +156,6 @@ This will most likely use an optional field i.e. 'deployment-tag' that would hol
 The **device-view.com** Api would then be able to track the deployment and retry any offline devices when they come back online.
 Any subsequent deployment with a different 'deployment-tag' would be considered a new deployment and any previous commands with a different 'deployment-tag' would be removed.
 
-#### Parameterised Commands
-
-In the future we shall look at adding support for parameterised commands, this would allow for inserting/interpolating values into the command based on other device information.
-There may be limited value to this as the additional complexity may outweigh the benefits, in particular it may be simpler to create a script to directly submit to the **device-view.com** Api.
-The main value from parameterised commands would be to allow insertion of sensitive information such as passwords, this would be a case of storing the sensitive information in a Github Secret and then using the secret in the command.
-We could also look to use the target.csv file to provide per-device information to be used in the commands such as a unit name or location.
-
 #### Device Query
 
 The **device-view.com** Api is designed to consolidate and simplify operations with Cisco RoomOS and MPP/PhoneOS devices.
@@ -131,4 +163,4 @@ As part of this simplification it is possible to send xConfiguration and xStatus
 A Github action is best suited for pushing configuration/state however we think there would be merit if we could also use this action to query device information and save/export.
 
 ## Feedback
-As this is a new project we would welcome any feedback, please feel free to raise an [issue](../../issues/new?title=Feedback&labels=enhancement) or [contact us](mailto:mail@unifiedfx.com) directly.
+As this is a new project we would welcome any feedback, please feel free to raise an [issue](../../issues/new?title=Feedback&labels=enhancement) or [contact us](mailto:mail@unifiedfx.com?subject=Device-View-Deploy%20Feedback) directly.

@@ -1,0 +1,17 @@
+# Lines starting with hashtags and blank lines are ignored
+# File that contains commands to send to the device
+# Each line is a command
+# Two types of commands are supported:
+#   * MPP/PhoneOS Macro commands i.e. Dialpad_1|Pause:4000|Dialpad_2|Pause:4000|Dialpad_3
+#   * CE/RoomOS xApi commands i.e. xConfiguration SystemUnit Name: MyRoomName
+# The following commands use the custom headers defined in targets.csv in the same folder as this file
+# Using template placeholders {{placeholderName}} the values from the targets.csv file will be used against each device/target
+# These commands set the Video Input Connector Names using the values in the targets.csv file
+#xConfiguration Video Input Connector[1] Name: {{video1Name}}
+#xConfiguration Video Input Connector[2] Name: {{video2Name}}
+
+# This command will set the SystemUnit Name using the value in the targets.csv file
+#xConfiguration SystemUnit Name: {{systemUnitName}}
+
+# This command will set the SystemUnit OptionKey using the value in the targets.csv file
+#xCommand SystemUnit OptionKey Add Key: {{optionKey1}}

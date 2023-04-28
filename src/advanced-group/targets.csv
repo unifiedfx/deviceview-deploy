@@ -1,0 +1,7 @@
+id,video1Name,video2Name,systemUnitName,optionKey1
+# Above is the header line, the first column must be id otherwise a default header will be used
+# The default header is id,arg1,arg2,arg3.....
+# Lines starting with hashtags are ignored
+# File that contains MAC addresses
+# Below is an example of a device H10G6MFD549K with arguments
+#H10G6MFD549K,Video1,Video2,DemoUnit1,OPTIONKEY1
