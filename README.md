@@ -11,7 +11,7 @@ Github actions can be triggered when a commit is made to a repository, on a sche
 
 The Github action requires the following information in order to deploy Cisco devices:
 
-* Api Token to **device-view.com** Api
+* Api Token to [**device-view.com**](https://app.device-view.com) Api
 * List of target devices (i.e. Mac Addresses)
 * List of commands (i.e. xCommand's) to send
 
@@ -82,7 +82,7 @@ Interpolation uses the [Mustache](https://mustache.github.io/) templating langua
 
 ``` csv
 id,systemUnitName
-H10G6MFD549K,DemoUnit1
+CC5A535FEA2F,DemoUnit1
 ```
 
 The command file can then use the systemUnitName column to insert the value into the command:
@@ -91,7 +91,7 @@ The command file can then use the systemUnitName column to insert the value into
 xConfiguration SystemUnit Name: {{systemUnitName}}
 ```
 
-This would result in the following command being sent to the H10G6MFD549K device:
+This would result in the following command being sent to the CC5A535FEA2F device:
 
 ``` text
 xConfiguration SystemUnit Name: DemoUnit1
@@ -99,6 +99,7 @@ xConfiguration SystemUnit Name: DemoUnit1
 
 Note: The column name is case sensitive and must match exactly and the first column must be 'id' as this is used to match the target device.
 Note: The advanced sample [targets.csv](src/advanced-group/targets.csv) and [commands.txt](src/advanced-group/commands.txt) files includes examples of using parameterized commands.
+Note: In the future a global set of parameters will be available to all commands, this will allow for a single parameter to be used across all commands. This is ideal for passwords to be passed from GitHub Secrets so they are not stored in the repository.
 
 ### Branching
 
@@ -147,19 +148,19 @@ Here is an example of the folder structure with a macro called 'macro1':
 
 #### Multiline Command support
 
-Some xCommands (i.e. uploading a Macro) are multi-line, the **device-view.com** Api supports multiline commands however a way to handle them in the commands.txt file has not been implemented as yet.
+Some xCommands (i.e. uploading a Macro) are multi-line, the [**device-view.com**](https://app.device-view.com) Api supports multiline commands however a way to handle them in the commands.txt file has not been implemented as yet.
 
 #### Offline Devices
 Currently the device-view.com Api will return an error if a device is offline, this would mean the device would not be updated until it is next online and the Github Action is triggered.
-In the future we shall look at updating the **device-view.com** Api to allow offline devices to be retried at a later time.
+In the future we shall look at updating the [**device-view.com**](https://app.device-view.com) Api to allow offline devices to be retried at a later time.
 This will most likely use an optional field i.e. 'deployment-tag' that would hold a unique identifier for the deployment such as the commit hash.
 The **device-view.com** Api would then be able to track the deployment and retry any offline devices when they come back online.
 Any subsequent deployment with a different 'deployment-tag' would be considered a new deployment and any previous commands with a different 'deployment-tag' would be removed.
 
 #### Device Query
 
-The **device-view.com** Api is designed to consolidate and simplify operations with Cisco RoomOS and MPP/PhoneOS devices.
-As part of this simplification it is possible to send xConfiguration and xStatus commands to the **device-view.com** Api.
+The [**device-view.com**](https://app.device-view.com) Api is designed to consolidate and simplify operations with Cisco RoomOS and MPP/PhoneOS devices.
+As part of this simplification it is possible to send xConfiguration and xStatus commands to the [**device-view.com**](https://app.device-view.com) Api.
 A Github action is best suited for pushing configuration/state however we think there would be merit if we could also use this action to query device information and save/export.
 
 ## Feedback

@@ -2,9 +2,9 @@ const axios = require('axios');
 const urlConcat = require('./UrlConcat.js')
 const core = require('@actions/core');
 
-async function SendPostCommand(device, xCommand, jwtToken, apiEndpoint){
+async function SendPostCommand(device, xCommand, jwtToken, apiEndpoint, useDemo = false){
     let deviceEndpoint = urlConcat.ConcatenatePlaceholder(apiEndpoint, device);
-    deviceEndpoint += '/command?useDemo=true';    //for use in test suite, remove before final
+    deviceEndpoint += '/command?useDemo=' + useDemo;
 
     let headerConfig = {
         headers: {

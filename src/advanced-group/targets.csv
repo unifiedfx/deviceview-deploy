@@ -3,5 +3,5 @@ id,video1Name,video2Name,systemUnitName,optionKey1
 # The default header is id,arg1,arg2,arg3.....
 # Lines starting with hashtags are ignored
 # File that contains MAC addresses
-# Below is an example of a device H10G6MFD549K with arguments
-#H10G6MFD549K,Video1,Video2,DemoUnit1,OPTIONKEY1
+# Below is an example of a device CC5A535FEA2F with arguments
+#CC5A535FEA2F,Video1,Video2,DemoUnit1,OPTIONKEY1

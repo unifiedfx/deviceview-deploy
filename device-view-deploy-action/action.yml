@@ -20,6 +20,10 @@ inputs:
     description: 'Filename of the target file, uses glob pattern matching'
     required: true
     default: 'target*.csv'
+  use-demo:
+    description: 'Use the demo api endpoint'
+    required: true
+    default: 'false'
   macro-path:
     description: 'Name of the folder to search for macros, uses glob pattern matching'
     required: true

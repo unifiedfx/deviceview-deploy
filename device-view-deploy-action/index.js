@@ -10,6 +10,7 @@ let apiEndpoint = core.getInput('api-endpoint');
 let commandFilename = core.getInput('command-filename');
 let targetFilename = core.getInput('target-filename');
 let macroPath = core.getInput('macro-path');
+let useDemo = core.getInput('use-demo');
 
 async function main(){
     var argv = require('minimist')(process.argv.slice(2));
@@ -19,6 +20,7 @@ async function main(){
     if(commandFilename == null || commandFilename.length == 0) commandFilename = argv['command-filename'] ?? 'command*.txt';
     if(targetFilename == null || targetFilename.length == 0) targetFilename = argv['target-filename'] ?? 'target*.csv';
     if(macroPath == null || macroPath.length == 0) macroPath = argv['macro-path'] ?? 'macros';
+    if(useDemo == null || useDemo.length == 0) useDemo = argv['use-demo'] ?? 'false';
     const basePath = path.resolve(__dirname, `../${sourceConfigPath}`);
     const commands = await getCommands(basePath);
     const targetPaths = await getTargetPaths(basePath);
@@ -37,7 +39,7 @@ async function sendCommands(groups, apiToken, apiEndpoint){
             for(const cmd of cmds) {
                 console.log(cmd, targets[target]);
                 try {
-                    await postRequest.SendPostCommand(target, cmd, apiToken, apiEndpoint);
+                    await postRequest.SendPostCommand(target, cmd, apiToken, apiEndpoint, useDemo === 'true');
                 }  catch (error) {
                     console.log(error);
                     break;
